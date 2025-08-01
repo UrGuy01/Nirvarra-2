@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import HeroSection from "./HeroSection";
 import ExperienceCarousel from "./ExperienceCarousel";
 import AccommodationSection from "./AccommodationSection";
 import PetFriendlySection from "./PetFriendlySection";
+import BookingForm from "./BookingForm";
 import { Button } from "./ui/button";
 import { MapPin, Phone, Mail } from "lucide-react";
+import { SignInButton, SignUpButton, UserButton, SignedIn, SignedOut } from "@clerk/clerk-react";
 
 const HomePage = () => {
+  const [showBookingForm, setShowBookingForm] = useState(false);
+
   return (
     <div className="min-h-screen bg-stone-50">
       {/* Navigation */}
@@ -39,12 +43,30 @@ const HomePage = () => {
               Contact
             </a>
           </div>
-          <Button
-            variant="outline"
-            className="bg-amber-500 hover:bg-amber-600 text-white border-none"
-          >
-            Book Now
-          </Button>
+          <div className="flex items-center gap-4">
+            <SignedOut>
+              <SignInButton mode="modal">
+                <Button variant="outline" className="text-white border-white hover:bg-white hover:text-stone-900">
+                  Sign In
+                </Button>
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <Button className="bg-amber-500 hover:bg-amber-600 text-white border-none">
+                  Sign Up
+                </Button>
+              </SignUpButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+              <Button
+                variant="outline"
+                className="bg-amber-500 hover:bg-amber-600 text-white border-none"
+                onClick={() => setShowBookingForm(true)}
+              >
+                Book Now
+              </Button>
+            </SignedIn>
+          </div>
         </div>
       </nav>
 
@@ -185,6 +207,27 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
+      {/* Booking Form Modal */}
+      {showBookingForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold">Book Your Stay</h2>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowBookingForm(false)}
+                >
+                  ✕
+                </Button>
+              </div>
+              <BookingForm />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="bg-stone-900 text-white py-8">

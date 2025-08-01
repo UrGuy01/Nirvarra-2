@@ -1,19 +1,19 @@
 import { Suspense } from "react";
-import { useRoutes, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Home from "./components/home";
 import AdminPage from "./admin/AdminPage";
-import routes from "tempo-routes";
+import SetupAdmin from "./admin/SetupAdmin";
+import AddAdmin from "./admin/AddAdmin";
 
 function App() {
   return (
-    <Suspense fallback={<p>Loading...</p>}>
-      <>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/admin" element={<AdminPage />} />
-        </Routes>
-        {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
-      </>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/setup" element={<SetupAdmin />} />
+        <Route path="/add-admin" element={<AddAdmin />} />
+      </Routes>
     </Suspense>
   );
 }
